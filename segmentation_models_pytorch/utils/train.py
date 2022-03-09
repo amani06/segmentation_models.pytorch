@@ -87,8 +87,8 @@ class TrainEpoch(Epoch):
 
     def batch_update(self, x, y):
         self.optimizer.zero_grad()
-        prediction = self.model.forward(x)
-        loss = self.loss(prediction, y)
+        prediction = self.model.forward(x)['pred']
+        loss = self.model.forward(x, gt= torch.argmax(prediction, dim = 1))['loss']
         loss.backward()
         self.optimizer.step()
         return loss, prediction
